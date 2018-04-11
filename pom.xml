@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jealcazars</groupId>
-	<artifactId>spring4-mvc-docker-hello-world</artifactId>
+	<artifactId>spring4-mvc-hello-world</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>spring4-mvc-docker-hello-world</name>
+	<name>spring4-mvc-hello-world</name>
 
 	<properties>
 		<jdk.version>1.7</jdk.version>
@@ -37,7 +37,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
-			<scope>${servlet-api.version}</scope>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -111,6 +111,12 @@
 			<version>2.2.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.jayway.restassured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>2.3.1</version>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -135,7 +141,7 @@
 					<downloadSources>true</downloadSources>
 					<downloadJavadocs>true</downloadJavadocs>
 					<wtpversion>2.0</wtpversion>
-					<wtpContextName>ibe</wtpContextName>
+					<wtpContextName>helloworld</wtpContextName>
 				</configuration>
 			</plugin>
 
@@ -148,6 +154,87 @@
 					<attachClasses>true</attachClasses>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.25.0</version>
+				<configuration>
+					<images>
+						<image>
+							<alias>tomcat</alias>
+							<name>tomcat</name>
+							<build>
+								<from>tomcat</from>
+								<ports>
+									<port>8080</port>
+								</ports>
+							</build>
+							<run>
+								<ports>
+									<port>tomcat.port:8080</port>
+								</ports>
+								<log>
+									<prefix>TC</prefix>
+									<color>cyan</color>
+								</log>
+							</run>
+						</image>
+					</images>
+
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>start</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>build</goal>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>stop</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.17</version>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>verify</id>
+						<goals>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<systemPropertyVariables>
+						<log.url>http://${docker.host.address}:${tomcat.port}/</log.url>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.10</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
