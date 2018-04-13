@@ -1,22 +1,19 @@
 # spring4-mvc-docker-hello-world
 
-Spring Mvc 4 Hello world example, with jsp view and rest controller and autowired service
+Spring Mvc 4 Docker Hello world example, with jsp view and rest controller and autowired service.
 
-## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. 
-
-### Ulrs
+## Ulrs
 
 [Controller hello: http://localhost:8080/helloworld/hello/name](http://localhost:8080/helloworld/hello/name)
 
 [Rest Controller hello: http://localhost:8080/helloworld/rest/hello/name](http://localhost:8080/helloworld/rest/hello/name)
 
 
-## Running the tests
+## Running the IT tests
 
 ```
-mvn clean install
+mvn clean verify
 ```
 
 ## Authors
