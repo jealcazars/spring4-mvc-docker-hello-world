@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.jealcazars</groupId>
-	<artifactId>spring4-mvc-hello-world</artifactId>
+	<artifactId>spring4-mvc-docker-hello-world</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>spring4-mvc-hello-world</name>
+	<name>spring4-mvc-docker-hello-world</name>
 
 	<properties>
 		<jdk.version>1.7</jdk.version>
@@ -160,12 +160,16 @@
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.25.0</version>
 				<configuration>
+					<verbose>true</verbose>
+
 					<images>
 						<image>
-							<alias>tomcat</alias>
-							<name>tomcat</name>
+							<name>tomcat_8_5_29_jre8</name>
 							<build>
-								<from>tomcat</from>
+								<dockerFile>tomcat.dockerfile</dockerFile>
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
 								<ports>
 									<port>8080</port>
 								</ports>
@@ -174,14 +178,9 @@
 								<ports>
 									<port>tomcat.port:8080</port>
 								</ports>
-								<log>
-									<prefix>TC</prefix>
-									<color>cyan</color>
-								</log>
 							</run>
 						</image>
 					</images>
-
 				</configuration>
 
 				<executions>
