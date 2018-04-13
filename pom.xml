@@ -197,6 +197,8 @@
 						<phase>post-integration-test</phase>
 						<goals>
 							<goal>stop</goal>
+							<!-- Cleanup images and containers after testing -->
+							<goal>remove</goal>							
 						</goals>
 					</execution>
 				</executions>
@@ -225,6 +227,7 @@
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
+			<!-- Unit testing is skipped -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
