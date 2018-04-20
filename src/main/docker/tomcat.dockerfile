@@ -5,4 +5,4 @@ MAINTAINER jealcazars <jealcazars@gmail.com>
 COPY tomcat_conf/context.xml 					/usr/local/tomcat/conf/
 COPY tomcat_conf/tomcat-users.xml 				/usr/local/tomcat/conf/
 COPY tomcat_conf/manager.xml 					/usr/local/tomcat/conf/Catalina/localhost/
-COPY maven/helloworld.war 							/usr/local/tomcat/webapps/
+COPY maven/helloworld.war 						/usr/local/tomcat/webapps/
